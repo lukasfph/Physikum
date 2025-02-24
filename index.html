@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortschrittsanzeige Staatsexamen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+        .progress-bar {
+            height: 20px;
+            background: red;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out, background 0.5s ease-in-out;
+        }
+        .checkbox-list label {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ich hoffe, dass dich das ein wenig weiter zum Staatsexamen bringt und du deine Fortschritte so abhaken kannst. Du schaffst das, ich glaube an dich! ❤️</h1>
+        
+        <div id="topics"></div>
+        
+        <h3>Gesamtfortschritt:</h3>
+        <div class="progress-container">
+            <div class="progress-bar" id="masterProgress"></div>
+        </div>
+    </div>
+    
+    <script>
+        const topics = {
+            "Anatomie": ["Schädelknochen", "Muskeln", "Lymphsystem", "Nase & Nasennebenhöhlen", "Mundhöhle", "Rachen", "Kehlkopf", "Schilddrüse", "Auge", "Ohr", "Hirnnerven", "Plexus cervicalis", "ZNS", "Wirbelsäule", "Lunge", "Herz", "Verdauungssystem", "Leber", "Gallenblase", "Gallenwege", "Bauchspeicheldrüse", "Milz", "Nebenniere", "Harnsystem", "Geschlechtsorgane", "Plazenta"],
+            "Histologie": ["Lymphatische Organe", "Mundhöhle", "Rumpfdarm", "Große Verdauungsorgane", "Atmungsorgane", "Endokrine Organe", "Weibl. Geschlechtsorgane", "Männl. Geschlechtsorgane", "Hämoorgane", "Gehirn", "Spezielle Sinnesorgane", "Haut mit Rezeptoren & Anhangsgebilden", "Färbung & Zahnentwicklung"]
+        };
+        
+        const topicsContainer = document.getElementById("topics");
+        let totalCheckboxes = 0, checkedCheckboxes = 0;
+        
+        function updateProgress() {
+            let checked = document.querySelectorAll("input[type='checkbox']:checked").length;
+            let total = totalCheckboxes;
+            let percent = Math.round((checked / total) * 100);
+            
+            let masterBar = document.getElementById("masterProgress");
+            masterBar.style.width = percent + "%";
+            masterBar.style.background = `rgb(${255 - (percent * 2.55)}, ${percent * 2.55}, 0)`;
+        }
+        
+        Object.entries(topics).forEach(([category, items]) => {
+            let section = document.createElement("div");
+            section.innerHTML = `<h3>${category}</h3>`;
+            
+            let list = document.createElement("div");
+            list.classList.add("checkbox-list");
+            
+            items.forEach(topic => {
+                totalCheckboxes++;
+                let label = document.createElement("label");
+                label.innerHTML = `<input type="checkbox" onchange="updateProgress()"> ${topic}`;
+                list.appendChild(label);
+            });
+            
+            let progressContainer = document.createElement("div");
+            progressContainer.classList.add("progress-container");
+            
+            let progressBar = document.createElement("div");
+            progressBar.classList.add("progress-bar");
+            progressContainer.appendChild(progressBar);
+            
+            section.appendChild(list);
+            section.appendChild(progressContainer);
+            topicsContainer.appendChild(section);
+        });
+    </script>
+</body>
+</html>
